@@ -19,19 +19,21 @@ class TextExtractor:
     def parse_subcategory(self, dataframe_column, text_to_parse):
         """
         Parse subcategory of a dataframe
+
         :param dataframe_column: column to put data into
         :param text_to_parse: text to clean and put in dataframe
         :return: NONE, writes data into pre-created variable
         """
-        split_text = text_to_parse.split("\n")
+        split_text = text_to_parse[text_to_parse.index(":")+1:].split(",")
         # the first element is a column name, therefore skip
-        split_text = [text for text in split_text if text != ''][1:]
+        split_text = [text for text in split_text if text != '']
         # First 3 characters is indices given by ChatGPT, which are not needed
-        self.dataframe_dict[dataframe_column] = [text[3:] for text in split_text]
+        self.dataframe_dict[dataframe_column] = [text.strip() for text in split_text]
 
     def parse_text(self, request_text):
         """
         Parse text from text image
+
         :return: dictionary with parsed items
         """
         data = self.scanner.make_request(request_text)
@@ -57,8 +59,9 @@ class TextExtractor:
 
 if __name__ == "__main__":
     extractor = TextExtractor()
+    # TODO refine text request
     extractor.parse_text(
         """
-        This is a scan of a bill from supermarket. Please classify every item in it. Give me a return in a following format: products: \n corresponding price: \n corresponding category:
+        This is a scan of a bill from supermarket. Please classify every item in it. Give me a return in a following format: products: \n corresponding price: \n corresponding category: \n prices need to be float format with '.' instead of ','. For the category of dairy product put 'dairy'. Please don't split products, all of them must be in 'products' same for 'prices' and 'categories', values must be comma-separated. Please don't put any service charaters like '-' before items as well as numeration. Everything with confectionary mentioned in a name classify as 'sweets'
         """
     )

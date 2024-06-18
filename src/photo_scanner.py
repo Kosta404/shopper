@@ -44,6 +44,7 @@ class PhotoScanner:
     def image_to_64_base(self):
         """
         Format photo into base64 to pass to GPT
+
         :return base 64 photo
         """
         self.file_worker.read_from_feed()
@@ -58,6 +59,7 @@ class PhotoScanner:
                      max_tokens=300):
         """
         Make request to ChatGPT
+
         :param text_request: request about an image
         :param max_tokens: maximum output tokens
         :return:
