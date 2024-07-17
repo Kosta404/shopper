@@ -55,13 +55,3 @@ class TextExtractor:
             df.to_excel(f"../reports/{current_day}/{datetime.now().hour}_{datetime.now().minute}.xlsx")
         except ValueError:
             print("[ERROR] Writing to the table went wrong. Try again.")
-
-
-if __name__ == "__main__":
-    extractor = TextExtractor()
-    # TODO refine text request
-    extractor.parse_text(
-        """
-        This is a scan of a bill from supermarket. Please classify every item in it. Give me a return in a following format: products: \n corresponding price: \n corresponding category: \n prices need to be float format with '.' instead of ','. For the category of dairy product put 'dairy'. Please don't split products, all of them must be in 'products' same for 'prices' and 'categories', values must be comma-separated. Please don't put any service charaters like '-' before items as well as numeration. Everything with confectionary mentioned in a name classify as 'sweets'
-        """
-    )

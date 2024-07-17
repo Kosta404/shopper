@@ -40,8 +40,3 @@ class StatisticGenerator:
             plt.show()
         else:
             plt.savefig(f"../graphical_reports/{datetime.now().year}_{datetime.now().month}.png")
-
-
-if __name__ == "__main__":
-    gen = StatisticGenerator()
-    gen.graphical_report()
