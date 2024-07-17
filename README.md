@@ -7,3 +7,4 @@ The pipeline is the following:
 Result is a grpahical monthly report with all your spendings by categories.
 
 If you have a bug to report please feel free to do so!
+Linked IN: https://www.linkedin.com/in/kostiantyn-horskiy-84419618b/
