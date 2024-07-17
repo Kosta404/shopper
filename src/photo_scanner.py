@@ -9,8 +9,13 @@ class PhotoScanner:
     """
     Class which is responsible for image processing and symbols recognition
     """
+
     def __init__(self, model="gpt-4o", enhance_photo=False):
-        self.api_key = "" # TODO Decide how to paste key here safely
+        with open("gpt_key.txt") as gpt_key:
+            self.api_key = gpt_key.readlines()[0]
+        if len(self.api_key) == 0:
+            print("[WARNING] Your key is empty!")
+            raise ValueError
         self.headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.api_key}"

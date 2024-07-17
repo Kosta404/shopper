@@ -11,20 +11,20 @@ class FileProcessor:
 
     def __init__(self,
                  force_path_generation=False,
-                 path_to_photos="../photos/",
-                 path_to_feed="../photo_feed/",
-                 path_to_reports="../reports/"):
-        self.path_to_photos = path_to_photos
-        self.path_to_feed = path_to_feed
-        self.path_to_reports = path_to_reports
-        self.feed_not_empty_flag = len(os.listdir(self.path_to_feed)) > 0
+                 path_to_photos="photos",
+                 path_to_feed="photo_feed",
+                 path_to_reports="reports"):
+        self.abs_path = os.path.dirname(os.path.abspath(__file__))
+        self.path_to_photos = os.path.join(self.abs_path, "..", path_to_photos)
+        self.path_to_feed = os.path.join(self.abs_path, "..", path_to_feed)
+        self.path_to_reports = os.path.join(self.abs_path, "..", path_to_reports)
+        self.feed_not_empty_flag = len(os.listdir(self.path_to_feed)) > 1
         current_day = datetime.today().strftime("%Y-%m-%d")
         if self.feed_not_empty_flag:
-            self.path_generator(f"../photos/{current_day}", force=force_path_generation)
-        self.path_generator(f"../reports/{current_day}", force=force_path_generation)
+            self.path_generator(os.path.join(self.path_to_photos, current_day), force=force_path_generation)
+        self.path_generator(os.path.join(self.path_to_reports, current_day), force=force_path_generation)
 
-    @staticmethod
-    def path_generator(path_to_generate, force=False):
+    def path_generator(self, path_to_generate, force=False):
         """
         Generate path to put bills to scan
 
@@ -32,7 +32,7 @@ class FileProcessor:
         :param force: force overwrite of the folder flag
         :return: path is generated, NONE
         """
-        path_to_create = os.path.exists(path_to_generate)
+        path_to_create = os.path.exists(os.path.join(self.path_to_photos, path_to_generate))
         if not path_to_create:
             print("[INFO] Directory does not exist! Creating...")
             os.mkdir(path_to_generate)
@@ -98,10 +98,13 @@ class FileProcessor:
         # get all the paths to the files
         for root, dirs, files in os.walk(self.path_to_reports):
             for filename in files:
-                split_folder = root.split("/")[-1].split("-")
+                split_folder = root.split("\\")[-1].split("-")
                 # 0 element is always a year in split folder name
                 # 1 element is always month in split folder name
                 # f.e. 2024-05-25 = ['2024', '05', '25']
-                if int(split_folder[0]) == year and int(split_folder[1]) == month:
-                    current_month_reports.append(os.path.join(root, filename))
+                try:
+                    if int(split_folder[0]) == year and int(split_folder[1]) == month:
+                        current_month_reports.append(os.path.join(root, filename))
+                except Exception:
+                    pass
         return current_month_reports

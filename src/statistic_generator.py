@@ -1,5 +1,6 @@
 import pandas
 from datetime import datetime
+import os
 import matplotlib.pyplot as plt
 from src.file_processor import FileProcessor
 
@@ -39,4 +40,5 @@ class StatisticGenerator:
             plt.grid(True)
             plt.show()
         else:
-            plt.savefig(f"../graphical_reports/{datetime.now().year}_{datetime.now().month}.png")
+            plt.savefig(
+                f"{os.path.dirname(os.path.abspath(__file__))}/../graphical_reports/{datetime.now().year}_{datetime.now().month}.png")
